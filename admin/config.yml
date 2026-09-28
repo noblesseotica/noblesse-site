@@ -1,13 +1,19 @@
 # Painel de edição do site (Decap CMS) — oticanoblesse.com.br/admin
 #
 # LOGIN: o site fica no GitHub Pages; a Netlify é usada SÓ para o login
-# ("Entrar com GitHub"). Em `site_domain`, o endereço do site da Netlify onde
-# o provedor OAuth do GitHub foi instalado.
+# ("Entrar com GitHub"), pelo site noblesse-login.netlify.app, onde está
+# instalado o provedor OAuth do GitHub (App OAuth "Painel Ótica Noblesse" na
+# conta noblesseotica, callback https://api.netlify.com/auth/done).
 #
-# ATENÇÃO ao transferir o repositório: atualizar `repo` para o novo dono.
+# IMPORTANTE: o domínio oticanoblesse.com.br precisa continuar cadastrado em
+# Domain management do site noblesse-login na Netlify (mesmo com os avisos de
+# DNS e certificado). A Netlify só devolve o login para os domínios do site;
+# sem ele, o login para em "Authorized" e o painel não entra.
+#
+# Ao transferir o repositório, atualizar `repo` para o novo dono.
 backend:
   name: github
-  repo: richarddias131-cloud/noblesse-site
+  repo: noblesseotica/noblesse-site
   branch: main
   base_url: https://api.netlify.com
   auth_endpoint: auth
