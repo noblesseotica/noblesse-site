@@ -1,0 +1,50 @@
+# Lê a planilha do cliente e publica o site quando algo mudou.
+# Roda de hora em hora e também sob demanda: aba Actions > "Atualizar site
+# pela planilha" > Run workflow.
+name: Atualizar site pela planilha
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: atualizar-pela-planilha
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ler planilha e aplicar no site
+        run: python3 scripts/planilha.py
+
+      - name: Publicar, se algo mudou
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet; then
+            echo "Nada mudou na planilha."
+            exit 0
+          fi
+          git config user.name "Atualização pela planilha"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Atualiza conteúdo pela planilha"
+          git push
+          # Commits feitos pelo GITHUB_TOKEN podem não disparar o build do
+          # GitHub Pages sozinhos: pede o build explicitamente.
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" \
+            || echo "::warning::Não consegui pedir o build do Pages; ele deve rodar com o push."

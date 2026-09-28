@@ -8,6 +8,8 @@
   /* ======================================================================
      CONFIG — EDITE AQUI
      ====================================================================== */
+  var CONTEUDO = window.NOBLESSE_CONTEUDO || {};
+
   var CONFIG = {
 
     /* Número no formato internacional, só dígitos (55 + DDD + número).
@@ -16,55 +18,34 @@
        seções de contato e localização) e nos links `tel:`. */
     whatsapp: '5534997202967',
 
-    /* FAIXA DE INAUGURAÇÃO (topo do hero).
-       A faixa aparece somente enquanto as DUAS condições valerem: `ativo`
-       true E a data atual anterior a `dataFim`. Ou seja: passou do dia, some
-       sozinha; e, se precisar tirar antes, basta `ativo: false` — sem mexer
-       no HTML nos dois casos.
-       `dataFim` usa o fuso do próprio visitante (sem "Z" no final), que é o
-       comportamento certo para um evento local.
-       PENDENTE: confirmar se 26/09 é a abertura da loja ou um evento de
-       inauguração de uma loja que já opera (ver comentário no index.html). */
-    evento: {
-      ativo: true,
-      dataFim: '2026-09-26T23:59:59'
-    },
+    /* FAIXA DE EVENTO, HORÁRIO, DEPOIMENTOS E SELO DO GOOGLE vêm da planilha
+       do cliente, por meio de assets/js/conteudo.js (gerado por
+       scripts/planilha.py — não editar à mão). Os valores abaixo só valem se
+       aquele arquivo não carregar.
 
-    /* PENDENTE — HORÁRIO DE FUNCIONAMENTO.
-       Enquanto a lista estiver vazia, o site mostra "confirme pelo WhatsApp"
-       em vez de inventar um horário. Para publicar o horário real, preencha:
+       Faixa de evento: aparece somente enquanto `ativo` for true E a data
+       atual for anterior a `dataFim` (fuso do visitante). Passou do dia, some
+       sozinha. */
+    evento: CONTEUDO.evento || { ativo: false, dataFim: '' },
 
-         horario: [
-           { dias: 'Segunda a sexta', horas: '9h às 18h' },
-           { dias: 'Sábado',          horas: '9h às 13h' }
-         ]
+    /* Lista vazia = o site mostra "confirme pelo WhatsApp". */
+    horario: CONTEUDO.horario || [],
 
-       Depois atualize também o JSON-LD no final do index.html (bloco
-       "openingHoursSpecification") e o Google Meu Negócio, com o MESMO horário. */
-    horario: [],
+    /* Seção de depoimentos fica oculta com a lista vazia e sem selo do Google. */
+    depoimentos: CONTEUDO.depoimentos || [],
 
-    /* PENDENTE — DEPOIMENTOS REAIS.
-       A seção Prova Social fica oculta enquanto esta lista estiver vazia e
-       não houver link do Google. Use depoimentos verdadeiros, com autorização
-       do cliente. `foto` é opcional (caminho da imagem ou null).
-
-         depoimentos: [
-           { nome: 'Maria Souza', texto: 'Trocaram minha lente em dois dias...', nota: 5, foto: null }
-         ] */
-    depoimentos: [],
-
-    /* PENDENTE — PERFIL NO GOOGLE MEU NEGÓCIO.
-       Preencha os três campos para o selo aparecer (nota, nº de avaliações e
-       link do perfil). Deixe `url` vazio para manter o selo oculto. */
-    google: {
-      nota: null,          // ex.: 4.9
-      avaliacoes: null,    // ex.: 87
-      url: ''              // ex.: 'https://g.page/r/CODIGO-DO-PERFIL'
-    }
+    /* Selo do Google: aparece com `nota` e `url` preenchidos. */
+    google: CONTEUDO.google || { nota: null, avaliacoes: null, url: '' }
   };
 
   /* ====================================================================== */
 
+  // Textos que vêm da planilha entram via innerHTML: escapar sempre.
+  var esc = function (t) {
+    return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -213,7 +194,7 @@
 
     var wrap = $('#horario-wrap');
     $('#horario-texto').innerHTML = CONFIG.horario.map(function (h) {
-      return '<span>' + h.dias + ': <strong>' + h.horas + '</strong></span>';
+      return '<span>' + esc(h.dias) + ': <strong>' + esc(h.horas) + '</strong></span>';
     }).join('<br>');
     wrap.hidden = false;
 
@@ -239,13 +220,13 @@
         var nota = Math.max(0, Math.min(5, Math.round(d.nota || 5)));
         var estrelas = new Array(nota + 1).join('★') + new Array(6 - nota).join('☆');
         var foto = d.foto
-          ? '<img src="' + d.foto + '" alt="" loading="lazy" width="40" height="40">'
+          ? '<img src="' + esc(d.foto) + '" alt="" loading="lazy" width="40" height="40">'
           : '';
         return '' +
           '<figure class="testimonial">' +
             '<p class="stars" aria-label="Avaliação: ' + nota + ' de 5">' + estrelas + '</p>' +
-            '<blockquote>“' + d.texto + '”</blockquote>' +
-            '<figcaption>' + foto + '<span>' + d.nome + '</span></figcaption>' +
+            '<blockquote>“' + esc(d.texto) + '”</blockquote>' +
+            '<figcaption>' + foto + '<span>' + esc(d.nome) + '</span></figcaption>' +
           '</figure>';
       }).join('');
 
@@ -266,8 +247,8 @@
     }
   } else if (window.console && console.info) {
     console.info(
-      '[Noblesse] Seção de prova social oculta: preencha CONFIG.depoimentos ' +
-      'e/ou CONFIG.google em assets/js/main.js com dados reais.'
+      '[Noblesse] Seção de prova social oculta: preencha os depoimentos ' +
+      'e/ou o selo do Google na planilha do site.'
     );
   }
 
