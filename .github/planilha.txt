@@ -1,0 +1,3 @@
+# Link da planilha do site (Google Planilhas > Arquivo > Compartilhar > Publicar na Web).
+# Cole o link na linha abaixo, sem o "#" na frente. Enquanto estiver vazio,
+# a atualização automática não faz nada.
