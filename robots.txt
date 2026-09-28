@@ -1,6 +1,7 @@
-# Ótica Noblesse — tudo liberado para buscadores.
+# Ótica Noblesse — liberado para buscadores, exceto o painel de edição.
 User-agent: *
 Allow: /
+Disallow: /admin/
 
 # Mesmo endereço do canonical do index.html.
 Sitemap: https://oticanoblesse.com.br/sitemap.xml

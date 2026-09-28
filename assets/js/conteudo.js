@@ -1,5 +1,5 @@
-/* GERADO AUTOMATICAMENTE a partir da planilha do site (scripts/planilha.py).
-   Não edite à mão: a próxima atualização sobrescreve este arquivo. */
+/* GERADO AUTOMATICAMENTE a partir do painel (conteudo/*.json → scripts/conteudo.py).
+   Não edite à mão: a próxima publicação sobrescreve este arquivo. */
 window.NOBLESSE_CONTEUDO = {
   "evento": {
     "ativo": true,

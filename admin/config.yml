@@ -1,0 +1,166 @@
+# Painel de edição do site (Decap CMS) — oticanoblesse.com.br/admin
+#
+# LOGIN: o site fica no GitHub Pages; a Netlify é usada SÓ para o login
+# ("Entrar com GitHub"). Em `site_domain`, o endereço do site da Netlify onde
+# o provedor OAuth do GitHub foi instalado.
+#
+# ATENÇÃO ao transferir o repositório: atualizar `repo` para o novo dono.
+backend:
+  name: github
+  repo: richarddias131-cloud/noblesse-site
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  site_domain: PREENCHER.netlify.app
+  commit_messages:
+    create: "Painel: cria {{collection}} “{{slug}}”"
+    update: "Painel: atualiza {{collection}} “{{slug}}”"
+    delete: "Painel: remove {{collection}} “{{slug}}”"
+    uploadMedia: "Painel: envia foto “{{path}}”"
+    deleteMedia: "Painel: remove foto “{{path}}”"
+
+# Rascunho → Em revisão → Pronto para publicar. Só vai para o site ao publicar.
+publish_mode: editorial_workflow
+locale: pt
+
+site_url: https://oticanoblesse.com.br
+display_url: https://oticanoblesse.com.br
+logo_url: https://oticanoblesse.com.br/assets/img/logo-noblesse-240.webp
+
+media_folder: assets/img/uploads
+public_folder: /assets/img/uploads
+
+collections:
+  - name: site
+    label: Conteúdo do site
+    description: >-
+      Depois de publicar, o site se atualiza em cerca de 1 a 2 minutos.
+      Texto em branco mantém o que já está no site.
+    editor:
+      preview: false
+    files:
+      - name: topo
+        label: Topo do site
+        file: conteudo/topo.json
+        fields:
+          - { name: chamada, label: Linha pequena acima do título, widget: string, required: false }
+          - name: titulo
+            label: Título principal
+            widget: string
+            required: false
+            hint: "Coloque uma palavra entre asteriscos para ela sair em itálico dourado. Ex.: Seu estilo \\*começa\\* no olhar"
+          - { name: texto, label: Texto abaixo do título, widget: text, required: false }
+
+      - name: evento
+        label: Faixa de evento
+        file: conteudo/evento.json
+        fields:
+          - name: mostrar
+            label: Mostrar a faixa
+            widget: boolean
+            required: false
+            hint: "Mesmo ligada, a faixa some sozinha depois da data abaixo."
+          - name: ate
+            label: Mostrar até o dia
+            widget: datetime
+            required: false
+            format: YYYY-MM-DD
+            date_format: DD/MM/YYYY
+            time_format: false
+            picker_utc: true
+            hint: "A faixa some depois das 23:59 desse dia."
+          - { name: titulo, label: Título da faixa, widget: string, required: false, hint: "Ex.: Convite especial · Inauguração 26/09" }
+          - { name: texto, label: Texto da faixa, widget: string, required: false }
+          - { name: botao, label: Texto do botão, widget: string, required: false }
+          - { name: mensagem, label: Mensagem que o cliente envia no WhatsApp ao clicar no botão, widget: text, required: false }
+
+      - name: horario
+        label: Horário de funcionamento
+        file: conteudo/horario.json
+        fields:
+          - name: itens
+            label: Horários
+            label_singular: horário
+            widget: list
+            required: false
+            hint: "Sem nenhum horário, o site pede para confirmar pelo WhatsApp. Cadastre o mesmo horário no Perfil da Empresa no Google."
+            summary: "{{fields.dias}}: {{fields.horas}}"
+            fields:
+              - { name: dias, label: Dias, widget: string, hint: "Ex.: Segunda a sexta" }
+              - { name: horas, label: Horas, widget: string, hint: "Ex.: 9h às 18h" }
+
+      - name: vitrine
+        label: Vitrine de fotos
+        file: conteudo/vitrine.json
+        fields:
+          - name: fotos
+            label: Fotos
+            label_singular: foto
+            widget: list
+            required: false
+            hint: "Arraste para mudar a ordem. Envie fotos na horizontal, em JPG, PNG ou WEBP. Fotos grandes são reduzidas automaticamente."
+            summary: "{{fields.descricao}}"
+            fields:
+              - { name: foto, label: Foto, widget: image, choose_url: false }
+              - name: descricao
+                label: Descrição da foto
+                widget: string
+                required: false
+                hint: "O que aparece na foto, em uma frase. Ajuda o Google e pessoas com deficiência visual."
+
+      - name: depoimentos
+        label: Depoimentos
+        file: conteudo/depoimentos.json
+        fields:
+          - name: itens
+            label: Depoimentos
+            label_singular: depoimento
+            widget: list
+            required: false
+            hint: "Use só depoimentos reais, com autorização do cliente. Sem depoimentos nem selo, a seção fica oculta."
+            summary: "{{fields.nome}}"
+            fields:
+              - { name: nome, label: Nome, widget: string }
+              - { name: texto, label: Depoimento, widget: text }
+              - { name: nota, label: Nota (1 a 5), widget: number, value_type: int, min: 1, max: 5, default: 5 }
+
+      - name: google
+        label: Selo de avaliações do Google
+        file: conteudo/google.json
+        fields:
+          - { name: nota, label: Nota no Google, widget: number, value_type: float, min: 1, max: 5, step: 0.1, required: false, hint: "Ex.: 4.9. Nota e link em branco = selo oculto." }
+          - { name: avaliacoes, label: Número de avaliações, widget: number, value_type: int, min: 0, required: false }
+          - { name: link, label: Link do perfil no Google, widget: string, required: false, hint: "Começa com https://" }
+
+      - name: secoes
+        label: Títulos das seções
+        file: conteudo/secoes.json
+        fields:
+          - { name: diferenciais, label: Diferenciais, widget: string, required: false }
+          - { name: ivision, label: iVision, widget: string, required: false }
+          - { name: marcas, label: Marcas e coleções, widget: string, required: false }
+          - { name: vitrine, label: Vitrine, widget: string, required: false }
+          - { name: depoimentos, label: Depoimentos, widget: string, required: false }
+          - { name: missao, label: Missão e visão, widget: string, required: false }
+          - { name: valores, label: Valores, widget: string, required: false }
+          - { name: localizacao, label: Localização, widget: string, required: false }
+          - { name: agendamento, label: Agendamento, widget: string, required: false }
+
+      - name: seo
+        label: SEO e Google
+        file: conteudo/seo.json
+        fields:
+          - { name: titulo, label: Título na busca do Google, widget: string, required: false, hint: "Até 60 caracteres." }
+          - { name: descricao, label: Descrição na busca do Google, widget: text, required: false, hint: "Até 155 caracteres." }
+          - { name: previa_titulo, label: Título da prévia do link (WhatsApp, redes sociais), widget: string, required: false }
+          - { name: previa_descricao, label: Descrição da prévia do link, widget: text, required: false, hint: "Os aplicativos podem levar alguns dias para mostrar a nova prévia." }
+          - name: google_analytics
+            label: Código do Google Analytics
+            widget: string
+            required: false
+            hint: "Começa com G-. Em branco = sem Analytics. Ao ativar, atualize a Política de Privacidade (cookies de estatística)."
+          - name: search_console
+            label: Código de verificação do Search Console
+            widget: string
+            required: false
+            hint: "Cole o código ou a tag <meta name=\"google-site-verification\" …> inteira."
