@@ -18,9 +18,9 @@
        seções de contato e localização) e nos links `tel:`. */
     whatsapp: '5534997202967',
 
-    /* FAIXA DE EVENTO, HORÁRIO, DEPOIMENTOS E SELO DO GOOGLE vêm da planilha
-       do cliente, por meio de assets/js/conteudo.js (gerado por
-       scripts/planilha.py — não editar à mão). Os valores abaixo só valem se
+    /* FAIXA DE EVENTO, HORÁRIO, DEPOIMENTOS E SELO DO GOOGLE vêm do conteúdo
+       do painel (/admin), por meio de assets/js/conteudo.js (gerado por
+       scripts/conteudo.py — não editar à mão). Os valores abaixo só valem se
        aquele arquivo não carregar.
 
        Faixa de evento: aparece somente enquanto `ativo` for true E a data
@@ -248,7 +248,7 @@
   } else if (window.console && console.info) {
     console.info(
       '[Noblesse] Seção de prova social oculta: preencha os depoimentos ' +
-      'e/ou o selo do Google na planilha do site.'
+      'e/ou o selo do Google no painel do site (/admin).'
     );
   }
 

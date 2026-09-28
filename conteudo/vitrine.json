@@ -1,0 +1,28 @@
+{
+  "fotos": [
+    {
+      "foto": "/assets/img/vitrine-1-sabrina-sato.webp",
+      "descricao": "Display da coleção Sabrina Sato Eyewear com armações de grau e solares expostas."
+    },
+    {
+      "foto": "/assets/img/vitrine-2-cores.webp",
+      "descricao": "Prateleiras com armações coloridas — rosa, azul e tons claros — ao lado de modelos escuros."
+    },
+    {
+      "foto": "/assets/img/vitrine-3-solares.webp",
+      "descricao": "Fileira de óculos de sol e armações de grau nas prateleiras douradas da loja."
+    },
+    {
+      "foto": "/assets/img/vitrine-4-fox.webp",
+      "descricao": "Display da Fox Eyewear com armações azuis e vermelhas expostas na prateleira."
+    },
+    {
+      "foto": "/assets/img/vitrine-5-grau.webp",
+      "descricao": "Armações de grau em acetato e metal organizadas em várias fileiras."
+    },
+    {
+      "foto": "/assets/img/vitrine-6-prateleira.webp",
+      "descricao": "Vista lateral das prateleiras douradas da Ótica Noblesse, cheias de armações."
+    }
+  ]
+}

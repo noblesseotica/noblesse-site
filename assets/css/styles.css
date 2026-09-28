@@ -729,9 +729,10 @@ button{font:inherit;color:inherit;}
 .vitrine-trilho{
   --vgap:clamp(14px,2vw,22px);
   display:flex;width:max-content;gap:var(--vgap);
-  animation:vitrine-desliza 56s linear infinite;
+  /* --vdur vem do HTML gerado: cresce com o número de fotos, mantendo o ritmo */
+  animation:vitrine-desliza var(--vdur,56s) linear infinite;
 }
-/* O trilho tem 12 slides e 11 vãos, então 50% da largura não corresponde a um
+/* O trilho tem 2N slides e 2N-1 vãos, então 50% da largura não corresponde a um
    bloco inteiro: falta meio vão. Sem esse ajuste, o loop dá um salto de ~11px
    a cada volta. */
 @keyframes vitrine-desliza{
