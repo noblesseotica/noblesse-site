@@ -11,7 +11,7 @@ backend:
   branch: main
   base_url: https://api.netlify.com
   auth_endpoint: auth
-  site_domain: PREENCHER.netlify.app
+  site_domain: noblesse-login.netlify.app
   commit_messages:
     create: "Painel: cria {{collection}} “{{slug}}”"
     update: "Painel: atualiza {{collection}} “{{slug}}”"
