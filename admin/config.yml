@@ -146,6 +146,7 @@ collections:
           - { name: ivision, label: iVision, widget: string, required: false }
           - { name: marcas, label: Marcas e coleções, widget: string, required: false }
           - { name: vitrine, label: Vitrine, widget: string, required: false }
+          - { name: inauguracao, label: Inauguração, widget: string, required: false }
           - { name: depoimentos, label: Depoimentos, widget: string, required: false }
           - { name: missao, label: Missão e visão, widget: string, required: false }
           - { name: valores, label: Valores, widget: string, required: false }
