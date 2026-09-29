@@ -724,6 +724,44 @@
 </section>
 
 <!-- ========================================================================
+     INAUGURAÇÃO (26/09/2026) — vídeo de tour pela loja e fotos do dia.
+     O vídeo não tem som: toca sozinho, sem som e em loop, só quando aparece
+     na tela (main.js). Com "reduzir movimento" ligado, fica parado na capa.
+     ======================================================================== -->
+<section class="section" id="inauguracao">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">26 de setembro de 2026</p>
+      <h2 class="section-title" data-c="secao.inauguracao">Nossa inauguração</h2>
+      <p class="section-lead">
+        Um sábado de portas abertas, balões lilás e dourados e muita gente
+        querida. Obrigado a cada um que veio celebrar o começo da Noblesse com a gente.
+      </p>
+    </header>
+
+    <div class="inaug-galeria">
+      <figure class="inaug-item reveal">
+        <video class="inaug-video" id="inaug-video" width="320" height="568" controls muted loop playsinline preload="none"
+               poster="assets/img/inauguracao-tour-capa.webp" aria-label="Tour em vídeo pela loja no dia da inauguração, sem som.">
+          <source src="assets/video/inauguracao-tour.mp4" type="video/mp4">
+        </video>
+        <figcaption>Um giro pela loja no dia</figcaption>
+      </figure>
+      <figure class="inaug-item reveal">
+        <img src="assets/img/inauguracao-fachada.webp" width="720" height="960" loading="lazy" decoding="async"
+             alt="Casal na entrada da Ótica Noblesse, sob um arco de balões lilás e dourados.">
+        <figcaption>A porta aberta na Floriano Peixoto</figcaption>
+      </figure>
+      <figure class="inaug-item reveal">
+        <img src="assets/img/inauguracao-convidada.webp" width="720" height="1280" loading="lazy" decoding="async"
+             alt="Duas mulheres sorrindo diante das prateleiras de armações, com balões lilás ao lado.">
+        <figcaption>Amigas e clientes celebrando com a gente</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================
      PROVA SOCIAL — renderizada por JS a partir de CONFIG.depoimentos.
      Fica OCULTA enquanto não houver depoimentos reais ou link do Google.
      ======================================================================== -->

@@ -333,6 +333,28 @@
     if (reduceMotion) definir(true);
   })();
 
+  /* --------------------------------------------- 5a2. VÍDEO DA INAUGURAÇÃO
+     Toca sem som e em loop só enquanto está na tela (e não baixa nada antes
+     disso: preload="none"). Com "reduzir movimento", fica parado na capa;
+     os controles nativos continuam lá para quem quiser assistir. */
+  (function () {
+    var video = $('#inaug-video');
+    if (!video || reduceMotion || !('IntersectionObserver' in window)) return;
+    var pausadoPeloUsuario = false;
+    video.addEventListener('pause', function () { if (!video.dataset.auto) pausadoPeloUsuario = true; delete video.dataset.auto; });
+    video.addEventListener('play', function () { pausadoPeloUsuario = false; });
+    new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) {
+          if (!pausadoPeloUsuario) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+        } else if (!video.paused) {
+          video.dataset.auto = '1';
+          video.pause();
+        }
+      });
+    }, { threshold: 0.5 }).observe(video);
+  })();
+
   /* ------------------------------------------------ 5b. LINKS DE WHATSAPP
      O site não tem formulário: o agendamento acontece pelos links de WhatsApp
      e pelo link de telefone, que funcionam mesmo sem JavaScript (os endereços

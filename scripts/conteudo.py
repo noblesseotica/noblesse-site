@@ -64,6 +64,7 @@ TEXTOS = {
     "secao.ivision": ("secoes", "ivision"),
     "secao.marcas": ("secoes", "marcas"),
     "secao.vitrine": ("secoes", "vitrine"),
+    "secao.inauguracao": ("secoes", "inauguracao"),
     "secao.depoimentos": ("secoes", "depoimentos"),
     "secao.missao": ("secoes", "missao"),
     "secao.valores": ("secoes", "valores"),
