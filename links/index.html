@@ -19,7 +19,7 @@
 <title>Ótica Noblesse | Links</title>
 <meta name="description" content="Agende pelo WhatsApp, conheça o site e acompanhe a Ótica Noblesse no TikTok.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#3C1D49">
+<meta name="theme-color" content="#BEA5CE">
 <meta property="og:title" content="Ótica Noblesse">
 <meta property="og:description" content="Agende pelo WhatsApp, conheça o site e acompanhe a Noblesse no TikTok.">
 <meta property="og:image" content="https://oticanoblesse.com.br/assets/img/og-noblesse.jpg">
@@ -32,83 +32,78 @@
   @font-face{font-family:"Cormorant Garamond";src:url("/assets/fonts/cormorant-600.woff2") format("woff2");font-weight:600;font-display:swap}
   @font-face{font-family:"Cormorant Garamond";src:url("/assets/fonts/cormorant-600-italic.woff2") format("woff2");font-weight:600;font-style:italic;font-display:swap}
 
+  /* Lilás do logo (o mesmo das áreas de destaque do site), com o texto em
+     ameixa e os detalhes no dourado do logo. */
   :root{
+    --lilac-logo:#BEA5CE;--lilac-logo-deep:#B196C3;--lilac-100:#EDE0F4;
     --plum-900:#2B1236;--plum-800:#3C1D49;--plum-700:#4E2860;
-    --lilac-300:#D9BFE6;--lilac-100:#EDE0F4;
-    --gold-500:#C9A55C;--gold-400:#D8B978;--gold-200:#EEDDB2;
-    --whats:#25D366;
+    --gold-700:#8A6829;--gold-logo:#B98A3C;--gold-500:#C9A55C;
+    --whats:#1FA855;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
-    margin:0;min-height:100svh;color:#fff;
+    margin:0;min-height:100svh;color:var(--plum-800);
     font:400 16px/1.6 "Montserrat","Segoe UI",Arial,sans-serif;
     background:
-      radial-gradient(120% 60% at 50% 0%, rgba(190,165,206,.38), rgba(190,165,206,0) 70%),
-      linear-gradient(180deg,var(--plum-800),var(--plum-900));
+      radial-gradient(120% 55% at 50% 0%, rgba(255,255,255,.34), rgba(255,255,255,0) 70%),
+      linear-gradient(180deg,var(--lilac-logo),var(--lilac-logo-deep));
     background-attachment:fixed;
   }
   main{
     max-width:440px;margin:0 auto;
-    padding:max(48px,env(safe-area-inset-top)) 20px max(36px,env(safe-area-inset-bottom));
+    padding:max(40px,env(safe-area-inset-top)) 20px max(36px,env(safe-area-inset-bottom));
     display:flex;flex-direction:column;align-items:center;text-align:center;
   }
 
-  .marca{
-    width:132px;height:132px;border-radius:50%;
-    display:grid;place-items:center;
-    background:radial-gradient(circle at 50% 40%,#fff,#F3EAF8);
-    border:1px solid var(--gold-400);
-    box-shadow:0 0 0 6px rgba(216,185,120,.12),0 18px 40px rgba(0,0,0,.28);
-  }
-  .marca img{width:104px;height:auto}
+  /* o logo é dourado com fundo transparente: feito para ficar sobre o lilás */
+  .marca img{display:block;width:170px;height:auto}
 
   h1{
-    margin:22px 0 4px;
-    font:600 2.1rem/1.1 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em;
+    margin:14px 0 4px;
+    font:600 2.1rem/1.1 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em;color:var(--plum-900);
   }
   .frase{
-    margin:0;font:600 italic 1.22rem/1.3 "Cormorant Garamond",Georgia,serif;color:var(--gold-200);
+    margin:0;font:600 italic 1.22rem/1.3 "Cormorant Garamond",Georgia,serif;color:var(--plum-700);
   }
   .local{
     margin:12px 0 0;font-size:.68rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
-    color:rgba(255,255,255,.62);
+    color:rgba(60,29,73,.7);
   }
-  .filete{width:44px;height:1px;margin:26px 0 28px;background:var(--gold-500)}
+  .filete{width:44px;height:1px;margin:24px 0 26px;background:var(--gold-logo)}
 
   ul{list-style:none;margin:0;padding:0;width:100%;display:grid;gap:14px}
   .link{
     display:flex;align-items:center;gap:14px;width:100%;
     padding:15px 18px;border-radius:14px;text-decoration:none;text-align:left;
-    color:#fff;background:rgba(255,255,255,.07);
-    border:1px solid rgba(216,185,120,.42);
+    color:var(--plum-800);background:rgba(255,255,255,.42);
+    border:1px solid rgba(255,255,255,.7);
+    box-shadow:0 6px 18px rgba(60,29,73,.08);
     transition:transform .2s ease,background .2s ease,border-color .2s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .link:hover,.link:focus-visible{background:rgba(255,255,255,.13);border-color:var(--gold-400);transform:translateY(-2px)}
+  .link:hover,.link:focus-visible{background:rgba(255,255,255,.62);border-color:var(--gold-500);transform:translateY(-2px)}
   .link:active{transform:scale(.985)}
-  .link:focus-visible{outline:2px solid var(--gold-200);outline-offset:3px}
+  .link:focus-visible{outline:2px solid var(--plum-700);outline-offset:3px}
   .icone{
     flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
-    background:rgba(216,185,120,.16);color:var(--gold-200);
+    background:var(--lilac-100);color:var(--gold-700);
   }
   .icone svg{width:22px;height:22px}
   .texto{flex:1;min-width:0}
   .texto strong{display:block;font-size:.95rem;font-weight:600;letter-spacing:.01em}
-  .texto span{display:block;font-size:.78rem;color:rgba(255,255,255,.68)}
-  .seta{flex:none;width:18px;height:18px;color:var(--gold-400);opacity:.8}
+  .texto span{display:block;font-size:.78rem;color:rgba(60,29,73,.72)}
+  .seta{flex:none;width:18px;height:18px;color:var(--gold-700)}
 
   /* destaque: o WhatsApp é a ação principal */
-  .link-whats{background:linear-gradient(135deg,var(--gold-400),var(--gold-500));border-color:transparent;color:var(--plum-900)}
-  .link-whats:hover,.link-whats:focus-visible{background:linear-gradient(135deg,var(--gold-200),var(--gold-400))}
-  .link-whats .icone{background:var(--plum-800);color:var(--whats)}
-  .link-whats .texto span{color:rgba(43,18,54,.74)}
-  .link-whats .seta{color:var(--plum-800)}
+  .link-whats{background:#fff;border-color:var(--gold-500);box-shadow:0 10px 26px rgba(60,29,73,.14)}
+  .link-whats:hover,.link-whats:focus-visible{background:#fff;border-color:var(--gold-logo)}
+  .link-whats .icone{background:#E7F7EE;color:var(--whats)}
 
   address{
-    margin:34px 0 0;font-style:normal;font-size:.8rem;line-height:1.7;color:rgba(255,255,255,.66);
+    margin:34px 0 0;font-style:normal;font-size:.8rem;line-height:1.7;color:rgba(60,29,73,.78);
   }
-  footer{margin-top:22px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+  footer{margin-top:22px;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(60,29,73,.5)}
 
   @media (prefers-reduced-motion:reduce){ .link{transition:none} .link:hover,.link:focus-visible{transform:none} }
 </style>
@@ -116,7 +111,7 @@
 <body>
 <main>
   <div class="marca">
-    <img src="/assets/img/logo-noblesse-240.webp" srcset="/assets/img/logo-noblesse-240.webp 240w, /assets/img/logo-noblesse-480.webp 480w" sizes="104px"
+    <img src="/assets/img/logo-noblesse-240.webp" srcset="/assets/img/logo-noblesse-240.webp 240w, /assets/img/logo-noblesse-480.webp 480w" sizes="170px"
          width="240" height="240" alt="Ótica Noblesse">
   </div>
 
