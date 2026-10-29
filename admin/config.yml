@@ -166,6 +166,11 @@ collections:
             widget: string
             required: false
             hint: "Começa com G-. Em branco = sem Analytics. Ao ativar, atualize a Política de Privacidade (cookies de estatística)."
+          - name: google_ads
+            label: Código do Google Ads
+            widget: string
+            required: false
+            hint: "Começa com AW- (pode colar a tag inteira). Em branco = sem Google Ads. Ao ativar ou desativar, revise a Política de Privacidade (cookies de publicidade)."
           - name: search_console
             label: Código de verificação do Search Console
             widget: string
