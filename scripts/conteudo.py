@@ -8,8 +8,9 @@ arquivos, valida cada valor e gera o que o site publica:
   * textos do index.html marcados com data-c="<chave>" (e data-c-whatsapp
     para o link do botão da faixa de evento);
   * as fotos da vitrine, entre <!-- vitrine:inicio --> e <!-- vitrine:fim -->;
-  * Google Analytics e verificação do Search Console, entre
-    <!-- google:inicio --> e <!-- google:fim --> no <head>;
+  * Google Analytics, Google Ads e verificação do Search Console, entre
+    <!-- google:inicio --> e <!-- google:fim --> no <head> (a tag do Google
+    também vai nas outras páginas públicas, ver OUTRAS_PAGINAS);
   * assets/js/conteudo.js, com faixa de evento, horário, depoimentos e selo do
     Google, lido pelo main.js.
 
@@ -35,6 +36,9 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 INDEX = RAIZ / "index.html"
+# páginas que recebem a tag do Google além do index.html (precisam dos
+# marcadores <!-- google:inicio --> e <!-- google:fim --> no <head>)
+OUTRAS_PAGINAS = [RAIZ / "politica-de-privacidade.html", RAIZ / "links" / "index.html"]
 PASTA_CONTEUDO = RAIZ / "conteudo"
 # arquivo -> campo da lista (as áreas que são listas guardam os itens nele)
 AREAS = {"seo": None, "topo": None, "evento": None, "secoes": None, "google": None,
@@ -198,33 +202,56 @@ def aplicar_vitrine(src, dados, avisos):
 
 # ------------------------------------------------ HTML: ferramentas do Google
 
-def aplicar_google(src, dados, avisos):
-    ini, fim = "<!-- google:inicio -->", "<!-- google:fim -->"
-    if ini not in src or fim not in src:
-        avisos.append("Marcadores do Google não encontrados no index.html.")
-        return src
-    linhas = []
+def _tag_google(dados, avisos):
+    """Linhas da tag do Google (gtag.js) com Analytics e/ou Google Ads.
 
-    verif = _pega(dados, "seo", "search_console")
-    if verif:
-        m = re.search(r'content="([^"]+)"', verif)  # aceita a tag inteira colada
-        token = (m.group(1) if m else verif).strip()
-        if re.fullmatch(r"[\w-]{10,100}", token):
-            linhas.append(f'<meta name="google-site-verification" content="{token}">')
-        else:
-            avisos.append("Código do Search Console em formato inesperado: ignorado.")
+    Um script gtag.js só, com um gtag('config', ...) para cada código: é assim
+    que o Google recomenda quando a mesma página tem Analytics e Ads."""
+    ids = []
 
     ga = _pega(dados, "seo", "google_analytics").upper()
     if ga:
         if re.fullmatch(r"G-[A-Z0-9]{4,20}", ga):
-            linhas += [
-                f'<script async src="https://www.googletagmanager.com/gtag/js?id={ga}"></script>',
-                "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
-                f"gtag('js',new Date());gtag('config','{ga}');</script>",
-            ]
+            ids.append(ga)
         else:
             avisos.append('Código do Google Analytics deve começar com "G-": ignorado.')
 
+    ads = _pega(dados, "seo", "google_ads").upper()
+    if ads:
+        m = re.search(r"AW-\d{6,15}", ads)  # aceita só o código ou a tag inteira colada
+        if m:
+            ids.append(m.group(0))
+        else:
+            avisos.append('Código do Google Ads deve começar com "AW-": ignorado.')
+
+    if not ids:
+        return []
+    configs = "".join(f"gtag('config','{i}');" for i in ids)
+    return [
+        f'<script async src="https://www.googletagmanager.com/gtag/js?id={ids[0]}"></script>',
+        "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+        f"gtag('js',new Date());{configs}</script>",
+    ]
+
+
+def _verificacao_google(dados, avisos):
+    verif = _pega(dados, "seo", "search_console")
+    if not verif:
+        return []
+    m = re.search(r'content="([^"]+)"', verif)  # aceita a tag inteira colada
+    token = (m.group(1) if m else verif).strip()
+    if re.fullmatch(r"[\w-]{10,100}", token):
+        return [f'<meta name="google-site-verification" content="{token}">']
+    avisos.append("Código do Search Console em formato inesperado: ignorado.")
+    return []
+
+
+def aplicar_google(src, linhas, avisos, nome="index.html"):
+    """Troca o que está entre <!-- google:inicio --> e <!-- google:fim -->."""
+    ini, fim = "<!-- google:inicio -->", "<!-- google:fim -->"
+    if ini not in src or fim not in src:
+        avisos.append(f"Marcadores do Google não encontrados em {nome}.")
+        return src
     corpo = "\n".join(linhas)
     bloco = f"{ini}\n{corpo}\n{fim}" if corpo else f"{ini}\n{fim}"
     a, b = src.index(ini), src.index(fim) + len(fim)
@@ -377,10 +404,21 @@ def aplicar():
     original = INDEX.read_text("utf-8")
     novo = aplicar_textos(original, dados, avisos)
     novo = aplicar_vitrine(novo, dados, avisos)
-    novo = aplicar_google(novo, dados, avisos)
+    tag = _tag_google(dados, avisos)
+    novo = aplicar_google(novo, _verificacao_google(dados, avisos) + tag, avisos)
     if novo != original:
         INDEX.write_text(novo, "utf-8")
         mudou.append("index.html")
+    # a tag do Google (Analytics/Ads) vai também nas outras páginas públicas;
+    # a verificação do Search Console só precisa estar na página inicial
+    for pagina in OUTRAS_PAGINAS:
+        if not pagina.exists():
+            continue
+        antes = pagina.read_text("utf-8")
+        depois = aplicar_google(antes, tag, avisos, pagina.relative_to(RAIZ).as_posix())
+        if depois != antes:
+            pagina.write_text(depois, "utf-8")
+            mudou.append(pagina.relative_to(RAIZ).as_posix())
     js = gerar_conteudo_js(montar_conteudo(dados, ler_conteudo_js(), avisos))
     if not CONTEUDO_JS.exists() or js != CONTEUDO_JS.read_text("utf-8"):
         CONTEUDO_JS.write_text(js, "utf-8")
@@ -399,7 +437,7 @@ def iniciar():
     dados = {"seo": {}, "topo": {}, "evento": {}, "secoes": {}}
     for chave, (grupo, campo) in TEXTOS.items():
         dados[grupo][campo] = v.get(chave, "")
-    dados["seo"].update({"google_analytics": "", "search_console": ""})
+    dados["seo"].update({"google_analytics": "", "google_ads": "", "search_console": ""})
 
     m = re.search(r'data-c-whatsapp="evento.mensagem"[^>]*\bhref="[^"]*\?text=([^"]*)"', src, re.S)
     c = ler_conteudo_js()
