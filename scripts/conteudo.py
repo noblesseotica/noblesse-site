@@ -38,7 +38,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 INDEX = RAIZ / "index.html"
 # páginas que recebem a tag do Google além do index.html (precisam dos
 # marcadores <!-- google:inicio --> e <!-- google:fim --> no <head>)
-OUTRAS_PAGINAS = [RAIZ / "politica-de-privacidade.html", RAIZ / "links" / "index.html"]
+OUTRAS_PAGINAS = [RAIZ / "politica-de-privacidade.html"]
 PASTA_CONTEUDO = RAIZ / "conteudo"
 # arquivo -> campo da lista (as áreas que são listas guardam os itens nele)
 AREAS = {"seo": None, "topo": None, "evento": None, "secoes": None, "google": None,
